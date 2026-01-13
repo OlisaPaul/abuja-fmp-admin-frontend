@@ -1,14 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import api from '@/lib/api';
-import { Save, Shield, Bell, Lock, Loader2 } from 'lucide-react';
+import { useState, useEffect } from "react";
+import api from "@/lib/api";
+import { Save, Shield, Bell, Lock, Loader2 } from "lucide-react";
+
+interface AdminSettings {
+  ictFee: number;
+  smsNotificationsEnabled: boolean;
+  maxFailedLoginAttempts: number;
+  accountLockoutDurationMinutes: number;
+}
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState<any>(null);
+  const [settings, setSettings] = useState<AdminSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
+  const [message, setMessage] = useState({ type: "", text: "" });
 
   useEffect(() => {
     fetchSettings();
@@ -16,10 +23,10 @@ export default function SettingsPage() {
 
   const fetchSettings = async () => {
     try {
-      const response = await api.get('/admin-settings');
+      const response = await api.get("/admin-settings");
       setSettings(response.data);
     } catch (error) {
-      console.error('Failed to fetch settings', error);
+      console.error("Failed to fetch settings", error);
     } finally {
       setLoading(false);
     }
@@ -28,15 +35,16 @@ export default function SettingsPage() {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    setMessage({ type: '', text: '' });
+    setMessage({ type: "", text: "" });
 
     try {
-      await api.patch('/admin-settings', settings);
-      setMessage({ type: 'success', text: 'Settings updated successfully!' });
-    } catch (error: any) {
+      await api.patch("/admin-settings", settings);
+      setMessage({ type: "success", text: "Settings updated successfully!" });
+    } catch (error) {
+      const err = error as { response?: { data?: { message?: string } } };
       setMessage({
-        type: 'error',
-        text: error.response?.data?.message || 'Failed to update settings',
+        type: "error",
+        text: err.response?.data?.message || "Failed to update settings",
       });
     } finally {
       setSaving(false);
@@ -80,10 +88,13 @@ export default function SettingsPage() {
                 <input
                   type="number"
                   className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  value={settings?.ictFee || ''}
-                  onChange={(e) =>
-                    setSettings({ ...settings, ictFee: Number(e.target.value) })
-                  }
+                  value={settings?.ictFee || ""}
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    setSettings((prev) =>
+                      prev ? { ...prev, ictFee: val } : null
+                    );
+                  }}
                 />
               </div>
               <div className="flex items-center justify-between p-4 bg-slate-950 rounded-xl border border-slate-800">
@@ -99,16 +110,26 @@ export default function SettingsPage() {
                 <button
                   type="button"
                   onClick={() =>
-                    setSettings({
-                      ...settings,
-                      smsNotificationsEnabled:
-                        !settings.smsNotificationsEnabled,
-                    })
+                    setSettings((prev) =>
+                      prev
+                        ? {
+                            ...prev,
+                            smsNotificationsEnabled:
+                              !prev.smsNotificationsEnabled,
+                          }
+                        : null
+                    )
                   }
-                  className={`w-12 h-6 rounded-full transition-colors relative ${settings?.smsNotificationsEnabled ? 'bg-blue-600' : 'bg-slate-700'}`}
+                  className={`w-12 h-6 rounded-full transition-colors relative ${
+                    settings?.smsNotificationsEnabled
+                      ? "bg-blue-600"
+                      : "bg-slate-700"
+                  }`}
                 >
                   <div
-                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${settings?.smsNotificationsEnabled ? 'left-7' : 'left-1'}`}
+                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${
+                      settings?.smsNotificationsEnabled ? "left-7" : "left-1"
+                    }`}
                   />
                 </button>
               </div>
@@ -129,13 +150,13 @@ export default function SettingsPage() {
                 <input
                   type="number"
                   className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  value={settings?.maxFailedLoginAttempts || ''}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      maxFailedLoginAttempts: Number(e.target.value),
-                    })
-                  }
+                  value={settings?.maxFailedLoginAttempts || ""}
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    setSettings((prev) =>
+                      prev ? { ...prev, maxFailedLoginAttempts: val } : null
+                    );
+                  }}
                 />
               </div>
               <div>
@@ -145,13 +166,15 @@ export default function SettingsPage() {
                 <input
                   type="number"
                   className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  value={settings?.accountLockoutDurationMinutes || ''}
-                  onChange={(e) =>
-                    setSettings({
-                      ...settings,
-                      accountLockoutDurationMinutes: Number(e.target.value),
-                    })
-                  }
+                  value={settings?.accountLockoutDurationMinutes || ""}
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    setSettings((prev) =>
+                      prev
+                        ? { ...prev, accountLockoutDurationMinutes: val }
+                        : null
+                    );
+                  }}
                 />
               </div>
             </div>
@@ -167,7 +190,11 @@ export default function SettingsPage() {
           </div>
           {message.text && (
             <div
-              className={`p-4 rounded-xl text-sm border ${message.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500' : 'bg-red-500/10 border-red-500/50 text-red-500'}`}
+              className={`p-4 rounded-xl text-sm border ${
+                message.type === "success"
+                  ? "bg-emerald-500/10 border-emerald-500/50 text-emerald-500"
+                  : "bg-red-500/10 border-red-500/50 text-red-500"
+              }`}
             >
               {message.text}
             </div>

@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 export interface User {
   id: string;
@@ -13,12 +13,15 @@ export interface LoginResponse {
 }
 
 export const authApi = {
-  login: async (credentials: any): Promise<LoginResponse> => {
-    const response = await api.post('/auth/login', credentials);
+  login: async (credentials: {
+    email: string;
+    password: string;
+  }): Promise<LoginResponse> => {
+    const response = await api.post("/auth/login", credentials);
     return response.data;
   },
   getProfile: async (): Promise<User> => {
-    const response = await api.get('/auth/profile');
+    const response = await api.get("/auth/profile");
     return response.data;
   },
 };

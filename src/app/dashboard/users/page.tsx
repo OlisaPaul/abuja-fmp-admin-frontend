@@ -335,10 +335,11 @@ function UserCard({
       setAccountError("");
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
-    onError: (err: any) => {
+    onError: (err) => {
       setCreatingAccount(false);
+      const error = err as { response?: { data?: { message?: string } } };
       setAccountError(
-        err.response?.data?.message || "Failed to create account"
+        error.response?.data?.message || "Failed to create account"
       );
       setTimeout(() => setAccountError(""), 5000);
     },
@@ -538,9 +539,10 @@ function LinkWalletModal({
         onClose();
       }, 2000);
     },
-    onError: (err: any) => {
+    onError: (err) => {
+      const error = err as { response?: { data?: { message?: string } } };
       setError(
-        err.response?.data?.message ||
+        error.response?.data?.message ||
           "Failed to link wallet. Please try again."
       );
     },
@@ -636,7 +638,7 @@ function LinkWalletModal({
                   className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
                 />
                 <p className="text-xs text-slate-500 mt-2">
-                  Enter the CPay Parish ID to link this user's wallet
+                  Enter the CPay Parish ID to link this user&apos;s wallet
                 </p>
               </div>
 
@@ -715,9 +717,10 @@ function EditUserModal({ user, onClose }: { user: User; onClose: () => void }) {
         onClose();
       }, 2000);
     },
-    onError: (err: any) => {
+    onError: (err) => {
+      const error = err as { response?: { data?: { message?: string } } };
       setError(
-        err.response?.data?.message ||
+        error.response?.data?.message ||
           "Failed to update user. Please try again."
       );
     },
@@ -732,9 +735,10 @@ function EditUserModal({ user, onClose }: { user: User; onClose: () => void }) {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       onClose();
     },
-    onError: (err: any) => {
+    onError: (err) => {
+      const error = err as { response?: { data?: { message?: string } } };
       setError(
-        err.response?.data?.message ||
+        error.response?.data?.message ||
           "Failed to delete user. Please try again."
       );
       setShowDeleteConfirm(false);
@@ -1164,9 +1168,10 @@ function HardDeleteModal({
         onClose();
       }, 2000);
     },
-    onError: (err: any) => {
+    onError: (err) => {
+      const error = err as { response?: { data?: { message?: string } } };
       setError(
-        err.response?.data?.message ||
+        error.response?.data?.message ||
           "Failed to delete user. Please try again."
       );
     },
@@ -1246,7 +1251,8 @@ function HardDeleteModal({
                   htmlFor="email_confirm"
                   className="block text-sm font-medium text-slate-300 mb-2"
                 >
-                  Type the user's email to confirm{" "}
+                  Type the user&apos;s email address to confirm deletion. This
+                  action cannot be undone.{" "}
                   <span className="text-red-500">*</span>
                 </label>
                 <input

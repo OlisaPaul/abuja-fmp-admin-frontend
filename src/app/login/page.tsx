@@ -1,41 +1,42 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { authApi } from '@/lib/auth';
-import { Lock, Mail, Loader2 } from 'lucide-react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { authApi } from "@/lib/auth";
+import { Lock, Mail, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const response = await authApi.login({ email, password });
-      localStorage.setItem('token', response.access_token);
+      localStorage.setItem("token", response.access_token);
 
       const user = await authApi.getProfile();
 
-      const isAdmin = ['admin', 'sub_admin'].includes(user.role);
+      const isAdmin = ["admin", "sub_admin"].includes(user.role);
 
       if (!isAdmin) {
-        setError('Access denied. Admin only.');
-        localStorage.removeItem('token');
+        setError("Access denied. Admin only.");
+        localStorage.removeItem("token");
         return;
       }
 
-      router.push('/dashboard');
-    } catch (err: any) {
+      router.push("/dashboard");
+    } catch (err) {
+      const error = err as { response?: { data?: { message?: string } } };
       setError(
-        err.response?.data?.message ||
-          'Login failed. Please check your credentials.',
+        error.response?.data?.message ||
+          "Login failed. Please check your credentials."
       );
     } finally {
       setLoading(false);
@@ -97,7 +98,7 @@ export default function LoginPage() {
               {loading ? (
                 <Loader2 className="animate-spin h-5 w-5" />
               ) : (
-                'Sign in'
+                "Sign in"
               )}
             </button>
           </div>

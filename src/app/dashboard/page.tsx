@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Users,
@@ -6,36 +6,36 @@ import {
   AlertCircle,
   ArrowUpRight,
   FileText,
-} from 'lucide-react';
+} from "lucide-react";
 
 const stats = [
   {
-    label: 'Total Parishes',
-    value: '124',
+    label: "Total Parishes",
+    value: "124",
     icon: Users,
-    color: 'text-blue-500',
-    bg: 'bg-blue-500/10',
+    color: "text-blue-500",
+    bg: "bg-blue-500/10",
   },
   {
-    label: 'Monthly Collection',
-    value: '₦12,450,000',
+    label: "Monthly Collection",
+    value: "₦12,450,000",
     icon: TrendingUp,
-    color: 'text-emerald-500',
-    bg: 'bg-emerald-500/10',
+    color: "text-emerald-500",
+    bg: "bg-emerald-500/10",
   },
   {
-    label: 'Pending Reports',
-    value: '15',
+    label: "Pending Reports",
+    value: "15",
     icon: AlertCircle,
-    color: 'text-amber-500',
-    bg: 'bg-amber-500/10',
+    color: "text-amber-500",
+    bg: "bg-amber-500/10",
   },
   {
-    label: 'Wallet Balance',
-    value: '₦45,200,000',
+    label: "Wallet Balance",
+    value: "₦45,200,000",
     icon: ArrowUpRight,
-    color: 'text-purple-500',
-    bg: 'bg-purple-500/10',
+    color: "text-purple-500",
+    bg: "bg-purple-500/10",
   },
 ];
 
@@ -45,7 +45,7 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
         <p className="text-slate-400 mt-2">
-          Welcome back. Here's what's happening today.
+          Welcome back. Here&apos;s what&apos;s happening today.
         </p>
       </div>
 
