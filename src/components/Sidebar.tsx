@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
@@ -10,28 +11,35 @@ import {
   Settings,
   LogOut,
   CreditCard,
-} from 'lucide-react';
+} from "lucide-react";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
-  { icon: Users, label: 'Users', href: '/dashboard/users' },
-  { icon: FileText, label: 'Reports', href: '/dashboard/reports' },
-  { icon: CreditCard, label: 'Payments', href: '/dashboard/payments' },
-  { icon: Wallet, label: 'Wallets', href: '/dashboard/wallets' },
-  { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
+  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+  { icon: Users, label: "Users", href: "/dashboard/users" },
+  { icon: FileText, label: "Reports", href: "/dashboard/reports" },
+  { icon: CreditCard, label: "Payments", href: "/dashboard/payments" },
+  { icon: Wallet, label: "Wallets", href: "/dashboard/wallets" },
+  { icon: Settings, label: "Settings", href: "/dashboard/settings" },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
+    localStorage.removeItem("token");
+    window.location.href = "/login";
   };
 
   return (
     <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col h-screen fixed left-0 top-0">
-      <div className="p-6">
+      <div className="p-6 flex items-center space-x-3">
+        <Image
+          src="/logo.png"
+          alt="Abuja FMP Logo"
+          width={40}
+          height={40}
+          className="rounded-lg"
+        />
         <h1 className="text-xl font-bold text-white tracking-tight">
           Abuja FMP
         </h1>
@@ -46,8 +54,8 @@ export default function Sidebar() {
               href={item.href}
               className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
                 isActive
-                  ? 'bg-blue-600 text-white'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
               }`}
             >
               <item.icon className="h-5 w-5" />
