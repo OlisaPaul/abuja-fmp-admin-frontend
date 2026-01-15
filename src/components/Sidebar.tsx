@@ -19,6 +19,7 @@ const menuItems = [
   { icon: FileText, label: "Reports", href: "/dashboard/reports" },
   { icon: CreditCard, label: "Payments", href: "/dashboard/payments" },
   { icon: Wallet, label: "Wallets", href: "/dashboard/wallets" },
+  { icon: FileText, label: "Collections", href: "/dashboard/collections" },
   { icon: Settings, label: "Settings", href: "/dashboard/settings" },
 ];
 
